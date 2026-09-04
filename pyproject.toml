@@ -1,0 +1,25 @@
+[project]
+name = "gaffer"
+version = "0.1.0"
+description = "This is an FPL analytics tool to analyse player data."
+readme = "README.md"
+authors = [
+    { name = "oksmith" }
+]
+requires-python = ">=3.13"
+dependencies = [
+  "marimo>=0.24.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.6",
+    "ty>=0.0.78",
+]
+
+[project.scripts]
+gaffer = "gaffer:main"
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
