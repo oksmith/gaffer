@@ -9,5 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         run: |
-          ruff check src
-          ty check src          
+          uv run ruff check
+          uv run ty check         
