@@ -23,3 +23,14 @@ gaffer = "gaffer:main"
 [build-system]
 requires = ["uv_build>=0.12.10,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+exclude = [
+  ".git",
+  ".venv",
+]
+
+[tool.ruff.lint]
+# Add selected ruff rules here. For now use the defaults.
