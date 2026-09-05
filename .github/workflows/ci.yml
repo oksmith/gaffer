@@ -21,3 +21,6 @@ jobs:
 
       - name: Run type checks
         run: uv run ty check
+
+      - name: Run unit tests
+        run: uv run pytest
