@@ -11,8 +11,17 @@ from gaffer.config import BACKOFF_BASE, BACKOFF_CAP, BASE_URL, MAX_RETRIES, REQU
 
 logger = logging.getLogger(__name__)
 
+# We keep these types generic on purpose, as we do stricter validation later on (when transforming
+# the raw data into DataFrames. This layer is simply for getting things from the FPL API and storing.
 JSONObject = dict[str, Any]
 JSONArray = list[dict[str, Any]]
+
+# Note: type JSON includes dicts with int keys because player summaries pass those in to be saved,
+# but later on json.dumps stringifies the keys on the way out.
+type JSON = dict[str, Any] | dict[int, Any] | list[Any] | str | int | float | bool | None
+
+# This type represents what json.loads can actually produce.
+type ParsedJSON = dict[str, Any] | list[Any] | str | int | float | bool | None
 
 
 class FPLClient:

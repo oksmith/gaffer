@@ -1,14 +1,14 @@
 import json
 import os
 from pathlib import Path
-from typing import Any
 
 from gaffer.config import DATA_DIR
+from gaffer.fpl_client import JSON, ParsedJSON
 
 RAW_DIR = DATA_DIR / "raw"
 
 
-def save_raw(name: str, obj: Any) -> Path:
+def save_raw(name: str, obj: JSON) -> Path:
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     path = RAW_DIR / f"{name}.json"
 
@@ -20,5 +20,5 @@ def save_raw(name: str, obj: Any) -> Path:
     return path
 
 
-def load_raw(name: str) -> Any:
+def load_raw(name: str) -> ParsedJSON:
     return json.loads((RAW_DIR / f"{name}.json").read_text(encoding="utf-8"))
