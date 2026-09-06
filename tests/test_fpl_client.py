@@ -10,7 +10,7 @@ def _client(handler) -> FPLClient:
     return FPLClient(client=httpx.Client(base_url=BASE_URL, transport=transport))
 
 
-def test_429_honours_retry_after_then_succeeds() -> None:
+def test_429_honours_retry_after_then_succeeds(no_sleep) -> None:
     calls = {"n": 0}
 
     # Mock out a single 429 response followed by success
@@ -25,13 +25,13 @@ def test_429_honours_retry_after_then_succeeds() -> None:
     assert calls["n"] == 2  # one 429, one success
 
 
-def test_5xx_backs_off_then_succeeds() -> None:
+def test_5xx_backs_off_then_succeeds(no_sleep) -> None:
     calls = {"n": 0}
 
     # Mock out a single backoff followed by success (i.e retrying works)
     def handler(_request: httpx.Request) -> httpx.Response:
         calls["n"] += 1
-        if calls["n"] <= 2:
+        if calls["n"] == 1:
             return httpx.Response(500)
         return httpx.Response(200, json={"ok": True})
 
@@ -40,7 +40,7 @@ def test_5xx_backs_off_then_succeeds() -> None:
     assert calls["n"] == 2
 
 
-def test_404_raises_immediately_zero_retries() -> None:
+def test_404_raises_immediately_zero_retries(no_sleep) -> None:
     calls = {"n": 0}
 
     # Mock out situation with a client error 404
@@ -54,7 +54,7 @@ def test_404_raises_immediately_zero_retries() -> None:
     assert calls["n"] == 1  # no retry on a client error
 
 
-def test_retries_exhaust_then_last_error_propagates() -> None:
+def test_retries_exhaust_then_last_error_propagates(no_sleep) -> None:
     calls = {"n": 0}
 
     # Mock out situation where we're always getting 500 responses
